@@ -1,0 +1,137 @@
+---
+title: "Introduction to fun r packages"
+author: "Shiyuan Xu, Ying Hong"
+date: "2022-11-12"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(fun)
+library(fortunes)
+library(cowsay)
+```
+# Part 1-- Introductions of R Packages
+
+## Interesting Package 1-- "cowsay"
+
+`Cowsay` prints out messages and shapes of animals. Names of animals are displayed below:
+```{r}
+names(animals)
+```
+There are 44 animal names in "cowsay".
+
+### Function `say()`: 
+prints out messages that are spoken by animals.
+
+### Arguments in function `say()`:
+- `what`: a string, a message that you want the animal to say. A special case: `what="time"` can output the current time.
+- `by`: a string, an animal character name (from the 44 animal names). Use `by = "random"` to select a random character.
+- `type`: specifies the type of message that the animal say, can be either "message" (default), "warning", or "string".
+- `by_color`: specifies the color(s) for the animal.
+
+### Example 1-- An anxious cat is telling us what current time is
+```{r}
+say(what = "time", 
+    by = "anxiouscat")
+```
+### Example 2-- Christmas greetings from a snowman in rainbow color
+```{r}
+say("Merry Christmas!", 
+    by = "snowman", 
+    what_color = rgb(.1, .2, .3),
+    by_color = "rainbow")
+```
+### Example 3-- A warning message
+```{r}
+say(what = "Wake up and study for your finals!", 
+    by = "pig", 
+    type = "warning")
+```
+
+
+## Interesting Package 2-- "fortunes":
+
+### Arguments in function `fortune()`:
+- `which`: an integer, row number of `fortunes` dataframe in `fortunes` library.
+- `author`: a string, a author name in `fortunes` library.
+
+### Example 1-- Function `fortune()` randomly prints a fortune message from `fortunes` dataframe by default.
+```{r}
+fortune()
+```
+
+### Example 2-- A fortune message from a specific row
+```{r}
+fortune(which = 10)
+```
+By specifying `which = 10`, we obtain a quote in the 10th row from `fortunes` dataframe.
+
+### Example 3-- A fortune message from a specific author
+
+First, let's take a look at the first 6 rows in the `fortunes` dataframe.
+```{r}
+df_fortunes <- read.fortunes()
+head(df_fortunes)
+```
+The columns in the dataframe are: quote, author, context, source, and date.
+```{r}
+num_rows <- nrow(df_fortunes)
+num_rows
+```
+There are `r num_rows` rows in the `fortunes` dataframe.
+
+From the `fortunes` dataframe, we can see all the author names. Below is the first 6 rows in the column `author`.
+```{r}
+head(df_fortunes["author"])
+```
+By specifying `author = "Robert Gentleman"`, we can extract an random quote from Robert Gentleman from the `fortunes` dataframe, along with its souce and date.
+```{r}
+fortune(author = "Robert Gentleman")
+```
+
+# Part 2-- Combination of "Cowsay" and "Fortunes" Packages
+
+This is an interactive R Markdown document using Shiny. Readers may interact with the document by specifying the following inputs and see the results immediately.
+
+- `animal`: you may choose any of the 44 animal characters from the above list
+- `name`: your name
+- `quote`: type "yes" if you want a fortune quote or "no" if you do not want a quote
+- `number`: number of quotes
+```{r eruptions, echo=TRUE}
+
+inputPanel(
+  textInput("animal", "animal", "pig"),
+  textInput("name", "name", "name"),
+  textInput("quote", "quote", "yes/no"),
+  textInput("number", "number", "1")
+)
+
+renderPrint({
+  if(input$quote == 'yes'){
+  say(what = paste('hello,', input$name, ', it appears that you would like to hear a quote, here it is:'), by = input$animal)
+  
+  for (x in 1:input$number) {
+  quote <- fortune()
+  quote_to_string <- paste(quote,collapse = ' ')
+  say(what = quote_to_string, by = input$animal)
+  } 
+    
+  } else{
+  say(what = paste('it appears that you do not wish to hear a quote'), by = input$animal)
+  }
+})
+
+```
+
+# Part 3-- References
+https://cran.r-project.org/web/packages/cowsay/vignettes/cowsay_tutorial.html
+https://www.rdocumentation.org/packages/fortunes/versions/1.5-4/topics/fortunes
+
+
+
+
