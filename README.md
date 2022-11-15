@@ -1,1 +1,3 @@
-# Stats5702_CC
+# Stats5702
+In this project, my partner Ying and I made a demonstration on two exciting R packages called "cowsay" and "fortunes". In the project, we included some detailed explanations of what the packages do and how to use the arguments to control output. Afterward, we make a fun interactive tool using shiny to combine the two packages and the link is attached below (as an interactive file cannot render a meaningful HTML). From this project, besides the contents of the package, we learned that coding can be fun and fascinating. Next time we would like to introduce more intriguing packages into our demo. (The file is in pdf form due to the submission limitation that I cannot submit both the rmd file and the text entry on canvas).
+Link here:https://shiyuan-xu.shinyapps.io/cc_xu_ying/
